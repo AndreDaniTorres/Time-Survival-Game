@@ -40,6 +40,13 @@ Game::~Game()
 	{
 		delete bull;
 	}
+
+    // Delete Enemies
+    for (auto *ene : this->enemies)
+    {
+        delete ene;
+    }
+    
     
 }
 
@@ -81,12 +88,17 @@ void Game::render()
     // Render main character
     this->player->render(*this->window); // window is a pointer
 
+    // Render Bullets
     for (auto *bullet: this->bullets)
 	{
 		bullet->render(this->window);
 	}
 
-    this->enemy->render(this->window);
+    // Render Enemies
+    for (auto *enemy: this->enemies)
+	{
+		enemy->render(this->window);
+	}
 
     this->window->display();
 
@@ -98,7 +110,8 @@ void Game::render()
 // --------------------------------------
 void Game::initBackground()
 {
-    if (!this->textureBackground.loadFromFile("Textures/background1.png"))
+    sf::IntRect r1(0, 0, 800, 800); // posicion, largo y, ancho x
+    if (!this->textureBackground.loadFromFile("Textures/background1.png", r1) )
     {
         std::cout << "ERROR::GAME::INITTEXTURE::Could not load background file." << std::endl;
     }
@@ -124,6 +137,7 @@ void Game::update()
     this->updateInput();
     this->player->update();
     this->updateBullets();
+    this->updateEnemies();
     
 
 }
@@ -232,10 +246,9 @@ void Game::updateBullets(){
     for (auto *bullet: this->bullets)
 	{
         bullet->update();
-        //std::cout << bullet->getPosition().x <<std::endl;
 
         // remove bullets outside the screen (left || right)
-        if ( (bullet->getPosition().x < 0) || (bullet->getPosition().x + bullet->getBounds().width > 800))
+        if ( (bullet->getPosition().x < 0) || (bullet->getPosition().x + bullet->getBounds().width > 1600))
         {
             delete this->bullets.at(count);
             this->bullets.erase( this->bullets.begin() + count);
@@ -254,7 +267,33 @@ void Game::updateBullets(){
 void Game::initEnemies(){
 
     // new enemy from Enemy constructor 
-    this->enemy = new Enemy(110.f, 110.f);
+    this->enemyTimerMax = 50.f;
+    this->enemyTimer = this->enemyTimerMax;
+}
+
+
+void Game::updateEnemies()
+{
+    this->enemyTimer += 0.05f;
+
+    // If enemyTimer reach Max, is set to 0
+    if (this->enemyTimer >= this->enemyTimerMax)
+    {
+        // Enemies in a random position in the left and right edge of the screen 
+        this->enemies.push_back( new Enemy(1, rand() % 800) );
+        this->enemies.push_back( new Enemy(800, rand() % 800) );
+        this->enemyTimer = 0.f;
+    }
+
+    for (size_t i = 0; i < this->enemies.size(); i++)
+    {
+        // update position of enemy
+        this->enemies[i]->update(this->player->getPos().x, this->player->getPos().y);
+
+    }
+    
+    
+
 }
 
 

@@ -12,11 +12,6 @@ private:
 	sf::Sprite sprite;
     sf::Texture texture;
 
-	int type;
-	float speed;
-	int damage;
-	int points;
-
 	void initShape();
 
 public:
@@ -24,16 +19,17 @@ public:
     Enemy(float pos_x, float pos_y);
     virtual ~Enemy();
 
-    //Accessors
-	const sf::FloatRect getBounds() const;
-	const int& getPoints() const;
-	const int& getDamage() const;
 
 	//Functions
-	void update();
+	void update(const float & pos_x, const float & pos_y);
+		
     void initSprite();
     void initTexture();
 	void render(sf::RenderTarget * target);
+
+	// Accessor
+	const sf::Vector2f& getPos() const;
+	const sf::FloatRect getBounds() const;
 };
 
 #endif

@@ -52,3 +52,25 @@ void Enemy::render(sf::RenderTarget * target)
 {
 	target->draw(this->sprite);
 }
+
+
+const sf::Vector2f & Enemy::getPos() const
+{
+	return this->sprite.getPosition();
+}
+
+const sf::FloatRect Enemy::getBounds() const
+{
+	return this->sprite.getLocalBounds();
+}
+
+
+// --------------------------------------
+// ------------- UPDATE ----------------
+// --------------------------------------
+void Enemy::update(const float & pos_x, const float & pos_y)
+{
+    // Towards player: (Position of player - position of enemy) * speed
+	this->sprite.move((pos_x - this->getPos().x) * 0.001, (pos_y - this->getPos().y)* 0.001);
+    
+}

@@ -32,7 +32,9 @@ private:
 	Player* player;
 
 	// Enemy
-	Enemy* enemy;
+	float enemyTimer;
+	float enemyTimerMax;
+	std::vector<Enemy*> enemies;
 
 	// Private functions
 	void initWindow();
@@ -40,7 +42,7 @@ private:
 	void initBackground();
 
 	void initPlayer();
-	void initEnemies();
+	void initEnemies();   
 	
 
 public:
@@ -49,7 +51,9 @@ public:
 
 	void updatePollEvents();
     void updateInput();
+
 	void updateBullets();
+	void updateEnemies();
 
 	void run();
 	void update();

@@ -81,7 +81,7 @@ void Player::initSprite()
     //Resize the sprite
     this->sprite.setOrigin({ this->sprite.getLocalBounds().width/2, 0 });
     this->sprite.setScale(0.6f, 0.6f);
-    this->sprite.setPosition(200, 200);
+    this->sprite.setPosition(400, 200);
     
 }
 
